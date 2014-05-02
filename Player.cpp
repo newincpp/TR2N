@@ -40,6 +40,10 @@ void Player::tryAttack(/*inputSet &input*/) {
 }
 
 bool Player::update() {
+    if (!_otherPlayer) {
+	std::cerr << "FUCK YOU SERIOUSLY  FUCK ! YOU !" << std::endl;
+	return false;
+    }
     if (_life <= 0) {
 	return (false);
     }
