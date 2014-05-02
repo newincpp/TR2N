@@ -31,6 +31,7 @@ int main() {
 
     Player player1(texture);
     Player player2(texture, &player1);
+    player1.setVs(&player2);
     animatedSprite.setPosition(50, 50);
     Attack a(animatedSprite, 2, player1.getPosition());
     player1.addAttack(a, 10);
