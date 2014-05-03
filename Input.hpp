@@ -1,9 +1,10 @@
+#ifndef INPUT_H_
+#define INPUT_H_
+
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Keyboard.hpp>
-#include "Attack.hpp"
-#include "Player.hpp"
 
 class Input {
 private:
@@ -39,3 +40,5 @@ public:
   Input(std::string);
   bool check(); 
 };
+
+#endif
