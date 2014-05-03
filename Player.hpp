@@ -11,6 +11,7 @@ class Player {
 	int _currentAttack;
 	bool _shouldStop;
 	sf::Sprite _texture;
+	sf::IntRect _position;
 	std::vector<Attack> _attackList;
 	std::vector<int> _attackLife;
 	//std::vector<inputSet&> _attackInput;
@@ -27,7 +28,7 @@ class Player {
 	void addPlayer(Attack &, int);//attack and life other player will eventually loose
 	void tryAttack();
 	bool update(); //return false when player is dead
-	sf::IntRect getPosition();
+	sf::IntRect const &getPosition();
 	AnimatedSprite const &getASprite() const;
 };
 

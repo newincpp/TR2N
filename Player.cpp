@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Player.hpp"
 
-Player::Player(sf::Texture &texture) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _texture(texture, sf::IntRect(32, 0, 32, 32)) {
+Player::Player(sf::Texture &texture) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _texture(texture, sf::IntRect(32, 0, 32, 32)), _position(0, 0, 32, 32) {
 }
 
-Player::Player(sf::Texture &texture, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _texture(texture, sf::IntRect(32, 0, 32, 32)) {
+Player::Player(sf::Texture &texture, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _texture(texture, sf::IntRect(32, 0, 32, 32)), _position(0, 0, 32, 32) {
 }
 
 Player::~Player() {
@@ -44,6 +44,7 @@ bool Player::update() {
     if (_life <= 0) {
 	return (false);
     }
+    _otherPlayer->getPosition();
     if (_attackList[_currentAttack].update(_otherPlayer->getPosition()) == true) {
 	_otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[_currentAttack]);
 	_shouldStop = true;
@@ -51,8 +52,8 @@ bool Player::update() {
     return (true);
 }
 
-sf::IntRect Player::getPosition() {
-    return (_texture.getTextureRect());
+sf::IntRect const &Player::getPosition() {
+    return (_position);
 }
 
 AnimatedSprite const &Player::getASprite() const {

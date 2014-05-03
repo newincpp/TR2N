@@ -17,12 +17,12 @@ class Attack {
 	Attack(Attack const &);
 	Attack const &operator=(Attack const &);
 	~Attack();
-	bool testHitbox(sf::IntRect &);
+	bool testHitbox(sf::IntRect const &);
 	int getCollisionFrame() const;
 	sf::IntRect const &getRect() const;
 	void stop();
 	void play(sf::IntRect const &);
-	bool update(sf::IntRect);
+	bool update(sf::IntRect const &);
 	AnimatedSprite &getAnimatedSprite() const;
 };
 
