@@ -5,6 +5,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Joystick.hpp>
+#include <SFML/Window/Keyboard.hpp>
 
 class Input {
 private:
@@ -28,13 +29,13 @@ private:
     char	lol;
     
     lol = 0; 
-    if(sf::Joystick::isButtonPressed(0, 1))
+    if(sf::Joystick::isButtonPressed(0, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2))
      lol |= mask('2');
-    if(sf::Joystick::isButtonPressed(0, 0))
+    if(sf::Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4))
       lol |= mask('4');
-    if(sf::Joystick::isButtonPressed(0, 3))
+    if(sf::Joystick::isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
       lol |= mask('6');
-    if(sf::Joystick::isButtonPressed(0, 2))
+    if(sf::Joystick::isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8))
       lol |= mask('8');
     return(lol);
   }
