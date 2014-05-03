@@ -25,23 +25,23 @@ private:
       return (8);
     return (0);
   }
-  inline char	_keyPressed() {
+  inline char	_keyPressed(int a) {
     char	lol;
     
     lol = 0; 
-    if(sf::Joystick::isButtonPressed(0, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    if(sf::Joystick::isButtonPressed(a, 1) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
      lol |= mask('2');
-    if(sf::Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if(sf::Joystick::isButtonPressed(a, 0) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
       lol |= mask('4');
-    if(sf::Joystick::isButtonPressed(0, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if(sf::Joystick::isButtonPressed(a, 3) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
       lol |= mask('6');
-    if(sf::Joystick::isButtonPressed(0, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if(sf::Joystick::isButtonPressed(a, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
       lol |= mask('8');
     return(lol);
   }
 public:
   Input(std::string, unsigned int);
-  bool check(); 
+  bool check(int); 
 };
 
 #endif

@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Player.hpp"
 
-Player::Player(Attack &a, int x, int y) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a) {
+Player::Player(Attack &a, int x, int y, int joystick) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a), _joy(joystick) {
 }
 
-Player::Player(Attack &a, int x, int y, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a) {
+Player::Player(Attack &a, int x, int y,int joystick, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a), _joy(joystick) {
 }
 
 Player::~Player() {
@@ -30,7 +30,7 @@ void Player::tryAttack() {
 
     if (_animationList.size() > 0 && _otherPlayer != NULL) {
 	for (unsigned int j = 0; j < _animationList.size(); ++j) {
-	    if ((res = _animationList[j].second.check()) == true) {
+	    if ((res = _animationList[j].second.check(_joy)) == true) {
 		i = j;
 		j = _animationList.size();
 	    }

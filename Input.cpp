@@ -1,13 +1,13 @@
 #include "Input.hpp"
 
-bool	Input::check()
+bool	Input::check(int a)
 {
   char	c;
 
   _t++;
   if (_i == _move.size())
     _i = 0;
-  c = _keyPressed();
+  c = _keyPressed(a);
   if (c & mask(_move[_i]))
     {    
       _i++;
