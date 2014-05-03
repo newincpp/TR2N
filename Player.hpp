@@ -1,6 +1,7 @@
 #ifndef PLAYER_H_
 # define PLAYER_H_
 
+#include "Input.hpp"
 #include "Attack.hpp"
 #include "AnimatedSprite.hpp"
 
@@ -10,26 +11,28 @@ class Player {
 	Player *_otherPlayer;
 	int _currentAttack;
 	bool _shouldStop;
-	sf::Sprite _texture;
 	sf::IntRect _position;
-	std::vector<Attack> _attackList;
-	//std::vector<inputSet&> _attackInput;
+	Attack &_attack;
+	int _currentFrame;
+	std::vector<Animation> _animationList;
+	std::vector<int> _attackLife;
+	std::vector<Input> _inputList;
 	Player();
 	Player(Player const &);
 	Player const &operator=(Player const &);
     public:
-	Player(sf::Texture &);
-	Player(sf::Texture &, Player *);
+	Player(Attack &);
+	Player(Player *, Attack &);
 	~Player();
 	void setVs(Player*);
 	int getLife() const;
 	void setLife(int);
-	void addAttack(Attack &, int); //+inputSet
-	void addPlayer(Attack &, int);//attack and life other player will eventually loose
+	void addAttack(Attack &, int, Animation &, Input);//attack and life other player will eventually loose
 	void tryAttack();
 	bool update(); //return false when player is dead
 	sf::IntRect const &getPosition();
-	AnimatedSprite const &getASprite() const;
+	AnimatedSprite getASprite() const;
+	void start(int);
 };
 
 #endif /* !PLAYER_H_ */

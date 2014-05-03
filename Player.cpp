@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Player.hpp"
 
-Player::Player(sf::Texture &texture) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _texture(texture, sf::IntRect(32, 0, 32, 32)), _position(0, 0, 32, 32) {
+Player::Player(Attack &a) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(0, 0, 32, 32), _attack(a) {
 }
 
-Player::Player(sf::Texture &texture, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _texture(texture, sf::IntRect(32, 0, 32, 32)), _position(0, 0, 32, 32) {
+Player::Player(Player *other, Attack &a) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(0, 0, 32, 32), _attack(a) {
 }
 
 Player::~Player() {
@@ -18,24 +18,34 @@ void Player::setLife(int life) {
     _life = life;
 }
 
-void Player::addAttack(Attack &newAttack, int attackLife) {
-    newAttack.setInpact(attackLife);
-    _attackList.push_back(newAttack);
+void Player::addAttack(Attack &newAttack, int attackLife, Animation &getAnimation, Input i) {
+    _attack = newAttack;
+    _animationList.push_back(getAnimation);
+    _attackLife.push_back(attackLife);
+    _inputList.push_back(i);
 }
 
-void Player::tryAttack(/*inputSet &input*/) {
-    int i = 0;
+void Player::tryAttack() {
+    unsigned int i = 0;
+    bool res;
 
-    if (_attackList.size() > 0 && _otherPlayer != NULL) {
-	//if (_attackInput.find(input)) {
-	_attackList[i].play(_texture.getTextureRect());
-	_shouldStop = false;
-	_currentAttack = i;
-	if (_attackList[i].update(_otherPlayer->getPosition()) == true) {
-	    _otherPlayer->setLife(_otherPlayer->getLife() - _attackList[i].getInpact());
-	    _shouldStop = true;
+    if (_animationList.size() > 0 && _otherPlayer != NULL) {
+	for (unsigned int j = 0; j < _inputList.size(); ++j) {
+	    if ((res = _inputList[j].check()) == true) {
+		std::cout << "yay" << std::endl;
+		i = j;
+		j = _inputList.size();
+	    }
 	}
-	//}
+	if (res == true) {
+	    _attack.play(_position, _animationList[i]);
+	    _shouldStop = false;
+	    _currentAttack = i;
+	    if (_attack.update(_otherPlayer->getPosition()) == true) {
+	        _otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[i]);
+	        _shouldStop = true;
+	    }
+	}
     }
 }
 
@@ -47,10 +57,15 @@ bool Player::update() {
     if (_life <= 0) {
 	return (false);
     }
-    _otherPlayer->getPosition();
-    const sf::IntRect& r = _otherPlayer->getPosition();
-    if (_attackList[_currentAttack].update(_otherPlayer->getPosition()) == true) {
-	_otherPlayer->setLife(_otherPlayer->getLife() - _attackList[_currentAttack].getInpact());
+    if (_shouldStop == false) {
+	_position.left = 50;
+	_position.top = 50;
+    }
+    if (_attack.isPlaying() == false) {
+	tryAttack();
+    }
+    if (_attack.update(_otherPlayer->getPosition()) == true) {
+	_otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[_currentAttack]);
 	_shouldStop = true;
     }
     return (true);
@@ -60,10 +75,16 @@ sf::IntRect const &Player::getPosition() {
     return (_position);
 }
 
-AnimatedSprite const &Player::getASprite() const {
-    return (_attackList[_currentAttack].getAnimatedSprite());
+AnimatedSprite Player::getASprite() const {
+    //_attack.getAnimatedSprite().move(_position.left, _position.top);
+    return (_attack.getAnimatedSprite());
 }
 
 void Player::setVs(Player* other) {
     _otherPlayer = other;
+}
+
+void Player::start(int i) {
+    _attack.play(_position, _animationList[i]);
+    _currentAttack = i;
 }

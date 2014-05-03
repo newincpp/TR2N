@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <unistd.h>
 #include "Attack.hpp"
 #include "Player.hpp"
 #include "Input.hpp"
@@ -30,17 +31,20 @@ int main() {
 
     sf::Clock frameClock;
 
-    Player player1(texture);
-    Player player2(texture, &player1);
+    Attack c(animatedSprite, 2, sf::IntRect(0, 0, 0, 0));
+    Attack d(animatedSprite, 2, sf::IntRect(0, 0, 0, 0));
+    Player player1(c);
+    Player player2(&player1, c);
+    Input i1("248", 60);
+    Input i2("268", 60);
     player1.setVs(&player2);
-    animatedSprite.setPosition(50, 50);
     Attack a(animatedSprite, 2, player1.getPosition());
-    player1.addAttack(a, 10);
+    Attack b(animatedSprite, 2, player2.getPosition());
+    player1.addAttack(a, 10, walkingAnimationDown, i1);
+    player2.addAttack(b, 10, walkingAnimationDown, i2);
 
-    player1.tryAttack();
-
-    bool  movecheck;
-    Input lol("248", 60);
+    player1.start(0);
+    player2.start(0);
     while (window.isOpen())
     {
 	sf::Event event;
@@ -51,17 +55,13 @@ int main() {
 	    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		window.close();
 	}
-	//	player1.update();
-	
-	movecheck = lol.check();
-	if (movecheck != false)
-	  std::cout<<"Wouhooooooooooo : "<<movecheck<<std::endl;
-		
-	// if a key was pressed set the correct animation and move correctly
-	sf::Vector2f movement(0.f, 0.f);
+	player1.update();
+	player2.update();
+	//sf::Vector2f movement(0.f, 0.f);
 	// draw
 	window.clear();
 	window.draw(player1.getASprite());
+	window.draw(player2.getASprite());
 	window.display();
     }
 }

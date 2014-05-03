@@ -55,20 +55,20 @@ void Attack::stop() {
     _currentFrame = 0;
 }
 
-void Attack::play(sf::IntRect const &offset) {
+void Attack::play(sf::IntRect const &offset, Animation &animation) {
     _currentFrame = 0;
     _offset = offset;
-    _animatedSprite.play();
+    _animatedSprite.play(animation);
 }
 
 AnimatedSprite &Attack::getAnimatedSprite() const {
     return (_animatedSprite);
 }
 
-unsigned int Attack::getInpact() const {
-    return _inpact;
+int Attack::getCurrentFrame() const {
+    return (_currentFrame);
 }
 
-void Attack::setInpact(unsigned int i) {
-    _inpact = i;
+bool Attack::isPlaying() const {
+    return (_animatedSprite.isPlaying());
 }
