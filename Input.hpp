@@ -10,6 +10,8 @@ class Input {
 private:
   std::string	_move;
   unsigned int	_i;
+  unsigned int  _f;
+  unsigned int  _t;
   inline char mask(char a)
   {
     if (a == '2')
@@ -37,7 +39,7 @@ private:
     return(lol);
   }
 public:
-  Input(std::string);
+  Input(std::string, unsigned int);
   bool check(); 
 };
 

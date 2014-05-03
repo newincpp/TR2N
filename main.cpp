@@ -38,6 +38,9 @@ int main() {
     player1.addAttack(a, 10);
 
     player1.tryAttack();
+
+    bool  movecheck;
+    Input lol("248", 60);
     while (window.isOpen())
     {
 	sf::Event event;
@@ -50,15 +53,10 @@ int main() {
 	}
 	//	player1.update();
 	
-	bool  movecheck;
-	Input lol("248");
-	while (42)
-	  {
-	    movecheck = lol.check();
-	    if (movecheck != false)
-	      std::cout<<movecheck<<std::endl;
-	  }
-	
+	movecheck = lol.check();
+	if (movecheck != false)
+	  std::cout<<"Wouhooooooooooo : "<<movecheck<<std::endl;
+		
 	// if a key was pressed set the correct animation and move correctly
 	sf::Vector2f movement(0.f, 0.f);
 	// draw
