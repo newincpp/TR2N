@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Joystick.hpp>
 
 class Input {
 private:
@@ -27,14 +27,14 @@ private:
   inline char	_keyPressed() {
     char	lol;
     
-    lol = 0;
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2))
-      lol |= mask('2');
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4))
+    lol = 0; 
+    if(sf::Joystick::isButtonPressed(0, 1))
+     lol |= mask('2');
+    if(sf::Joystick::isButtonPressed(0, 0))
       lol |= mask('4');
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6))
+    if(sf::Joystick::isButtonPressed(0, 3))
       lol |= mask('6');
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8))
+    if(sf::Joystick::isButtonPressed(0, 2))
       lol |= mask('8');
     return(lol);
   }
