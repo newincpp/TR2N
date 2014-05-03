@@ -34,6 +34,18 @@ int main() {
     walkingAnimationRight.addFrame(sf::IntRect(64, 64, 32, 32));
     walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
     walkingAnimationRight.addFrame(sf::IntRect( 0, 64, 32, 32));
+    Animation walkingAnimationUp;
+    walkingAnimationUp.setSpriteSheet(texture);
+    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect(64, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
+    walkingAnimationUp.addFrame(sf::IntRect( 0, 96, 32, 32));
+    Animation walkingAnimationDown;
+    walkingAnimationDown.setSpriteSheet(texture);
+    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect(64, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
+    walkingAnimationDown.addFrame(sf::IntRect( 0, 0, 32, 32));
 
     AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
     AnimatedSprite animatedSprite1(sf::seconds(0.2), true, false);
@@ -44,17 +56,23 @@ int main() {
 
     Attack c(animatedSprite, 2, sf::IntRect(0, 0, 0, 0));
     Attack d(animatedSprite1, 2, sf::IntRect(0, 0, 0, 0));
-    Player player1(c, screenDimensions.x / 2 - 30, screenDimensions.y / 2);
-    Player player2(d, screenDimensions.x / 2 + 30, screenDimensions.y / 2, &player1);
+    Player player1(c, screenDimensions.x / 2 - 33, screenDimensions.y / 2);
+    Player player2(d, screenDimensions.x / 2 + 33, screenDimensions.y / 2, &player1);
     Input i1("248", 60);
     Input i2("268", 60);
+    Input i3("464", 60);
+    Input i4("646", 60);
     player1.setVs(&player2);
     Attack a(animatedSprite, 2, player1.getPosition());
     Attack b(animatedSprite1, 2, player2.getPosition());
     player1.addAttack(a, 10, walkingAnimationRight, i1, std::make_pair(0, 1));
     player1.addAttack(a, 10, walkingAnimationLeft, i2, std::make_pair(0, -1));
+    player1.addAttack(a, 0, walkingAnimationUp, i3, std::make_pair(0, 0));
+    player1.addAttack(a, 0, walkingAnimationDown, i4, std::make_pair(0, 0));
     player2.addAttack(b, 10, walkingAnimationLeft, i1, std::make_pair(0, -1));
     player2.addAttack(b, 10, walkingAnimationRight, i2, std::make_pair(0, 1));
+    player2.addAttack(b, 0, walkingAnimationUp, i3, std::make_pair(0, 0));
+    player2.addAttack(b, 0, walkingAnimationDown, i4, std::make_pair(0, 0));
 
     player1.start(0);
     player2.start(0);
@@ -68,21 +86,21 @@ int main() {
     std::list<std::string>::const_iterator lit(musicList.begin());
     sf::Music music;
     if (!music.openFromFile(*lit))
-      return -1; // erreur
+	return -1; // erreur
     music.setLoop(false);
     music.setPlayingOffset(sf::seconds(120));
     music.play();
 
     while (window.isOpen())
     {
-      if (music.getStatus() == sf::SoundSource::Status::Stopped)
+	if (music.getStatus() == sf::SoundSource::Status::Stopped)
 	{
-	  lit++;
-	  if (lit == musicList.end())
-	    lit = musicList.begin();
-	  if (!music.openFromFile(*lit))
-	    return (-1);
-	  music.play();
+	    lit++;
+	    if (lit == musicList.end())
+		lit = musicList.begin();
+	    if (!music.openFromFile(*lit))
+		return (-1);
+	    music.play();
 	}
 	sf::Event event;
 	while (window.pollEvent(event))
