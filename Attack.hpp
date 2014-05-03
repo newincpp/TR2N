@@ -22,6 +22,7 @@ class Attack {
 	sf::IntRect const &getRect() const;
 	void stop();
 	void play(sf::IntRect const &, Animation &);
+	void updateOffset(sf::IntRect const &);
 	bool update(sf::IntRect const &);
 	AnimatedSprite &getAnimatedSprite() const;
 	int getCurrentFrame() const;

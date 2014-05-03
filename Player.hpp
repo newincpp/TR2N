@@ -20,8 +20,8 @@ class Player {
 	Player(Player const &);
 	Player const &operator=(Player const &);
     public:
-	Player(Attack &);
-	Player(Player *, Attack &);
+	Player(Attack &, int, int);
+	Player(Attack &, int, int, Player *);
 	~Player();
 	void setVs(Player*);
 	int getLife() const;

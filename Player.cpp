@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Player.hpp"
 
-Player::Player(Attack &a) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(0, 0, 32, 32), _attack(a) {
+Player::Player(Attack &a, int x, int y) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 32, 32), _attack(a) {
 }
 
-Player::Player(Player *other, Attack &a) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(0, 0, 32, 32), _attack(a) {
+Player::Player(Attack &a, int x, int y, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(x, y, 32, 32), _attack(a) {
 }
 
 Player::~Player() {
@@ -39,32 +39,48 @@ void Player::tryAttack() {
 	    _attack.play(_position, _animationList[i].first);
 	    _shouldStop = false;
 	    _currentAttack = i;
-	    if (_attack.update(_otherPlayer->getPosition()) == false) {
-	        _otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[i].second);
-	        _shouldStop = true;
+	    if (_attack.update(_otherPlayer->getPosition()) == true) {
+		_otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[i].second);
+		_shouldStop = true;
 	    }
 	}
     }
 }
 
 bool Player::update() {
+    bool dec;
+
     if (!_otherPlayer) {
-	std::cerr << "FUCK YOU SERIOUSLY  FUCK ! YOU !" << std::endl;
 	return false;
     }
     if (_life <= 0) {
 	return (false);
     }
-    if (_shouldStop == false) {
-	_attack.getAnimatedSprite().move(_moveLife[_currentAttack].first.second, _moveLife[_currentAttack].first.first);
-    }
     if (_attack.isPlaying() == false) {
 	_shouldStop = true;
 	tryAttack();
     }
-    if (_attack.update(_otherPlayer->getPosition()) == false) {
+    dec = false;
+    if (_attack.isPlaying() == true && _attack.testHitbox(_otherPlayer->getPosition()) == false) {
+	_position.top += _moveLife[_currentAttack].first.first;
+	_position.left += _moveLife[_currentAttack].first.second;
+	_attack.updateOffset(_position);
+	if (_attack.testHitbox(_otherPlayer->getPosition()) == false) {
+	    _attack.getAnimatedSprite().move(_moveLife[_currentAttack].first.second, _moveLife[_currentAttack].first.first);
+	} else {
+	    dec = true;
+	}
+    }
+    if (_shouldStop == false && _attack.update(_otherPlayer->getPosition()) == true) {
 	_otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[_currentAttack].second);
 	_shouldStop = true;
+    } else if (_shouldStop == true) {
+	_attack.update(_otherPlayer->getPosition());
+    }
+    if (dec == true) {
+	_position.top -= _moveLife[_currentAttack].first.first;
+	_position.left -= _moveLife[_currentAttack].first.second;
+	_attack.updateOffset(_position);
     }
     return (true);
 }
@@ -74,9 +90,9 @@ sf::IntRect const &Player::getPosition() const {
 }
 
 void Player::setPosition(int x, int y) {
-    _position.top = x;
-    _position.left = y;
-    _attack.getAnimatedSprite().move(_position.left, _position.top);
+    _position.top += x;
+    _position.left += y;
+    _attack.getAnimatedSprite().move(y, x);
 }
 
 AnimatedSprite Player::getASprite() const {
