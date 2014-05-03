@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Player.hpp"
 
-Player::Player(Attack &a, int x, int y) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 32, 32), _attack(a) {
+Player::Player(Attack &a, int x, int y) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 15, 15), _attack(a) {
 }
 
 Player::Player(Attack &a, int x, int y, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(x, y, 32, 32), _attack(a) {
