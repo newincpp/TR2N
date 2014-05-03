@@ -4,6 +4,8 @@ bool Input::check()
 {
   char	c;
 
+  if (_i == _move.size())
+    _i = 0;
   c = _keyPressed();
   if (c & mask(_move[_i]))
     _i++;

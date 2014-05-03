@@ -55,7 +55,8 @@ int main() {
 	while (42)
 	  {
 	    movecheck = lol.check();
-	    std::cout<<movecheck<<std::endl;
+	    if (movecheck != false)
+	      std::cout<<movecheck<<std::endl;
 	  }
 	
 	// if a key was pressed set the correct animation and move correctly
