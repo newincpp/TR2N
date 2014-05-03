@@ -26,6 +26,10 @@ bool	Input::check(int a)
   return (false);
 }
 
+void	Input::clear()
+{
+  _i = 0;
+}
 Input::Input(std::string a, unsigned int frame) : _move(a), _i(0), _f(frame), _t(0)
 {
 }

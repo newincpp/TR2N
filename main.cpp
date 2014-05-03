@@ -84,9 +84,9 @@ int main() {
 
     AnimatedSprite animatedSprite(sf::seconds(0.01), true, false);
     AnimatedSprite animatedSprite1(sf::seconds(0.01), true, false);
-    animatedSprite.setPosition(sf::Vector2f(250, 450));
+    animatedSprite.setPosition(sf::Vector2f(412, 612));
     animatedSprite1.setScale(-1, 1);
-    animatedSprite1.setPosition(sf::Vector2f(1650, 450));
+    animatedSprite1.setPosition(sf::Vector2f(1812, 612));
 
     sf::Clock frameClock;
 
@@ -94,10 +94,10 @@ int main() {
     Attack d(animatedSprite1, 2, sf::IntRect(0, 0, 0, 0));
     Player player1(c, 100, 200, 0);
     Player player2(d, 1400, 200, 2, &player1);
-    Input i1("248", 60);
-    Input i2("268", 60);
-    Input i3("464", 60);
-    Input i4("646", 60);
+    Input i1("254585", 60);
+    Input i2("256585", 60);
+    Input i3("456545", 60);
+    Input i4("654565", 60);
     player1.setVs(&player2);
     Attack a(animatedSprite, 2, player1.getPosition());
     Attack b(animatedSprite1, 2, player2.getPosition());
