@@ -3,7 +3,8 @@ SRC	= main.cpp \
 	  Attack.cpp \
 	  Animation.cpp \
 	  AnimatedSprite.cpp \
-	  Input.cpp
+	  Input.cpp \
+	  LifeBar.cpp
 
 NAME	= tron
 

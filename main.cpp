@@ -6,6 +6,7 @@
 #include "Attack.hpp"
 #include "Player.hpp"
 #include "Input.hpp"
+#include "LifeBar.hpp"
 #include <iostream>
 
 int main() {
@@ -19,6 +20,13 @@ int main() {
     if (!texture.loadFromFile("anim.png"))
     {
 	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    
+    sf::Texture bgTexture;
+    if (!bgTexture.loadFromFile("bg.png"))
+    {
+	std::cout << "Failed to load ta mere(bg)!" << std::endl;
 	return 1;
     }
 
@@ -109,11 +117,19 @@ int main() {
     if (!music.openFromFile(*lit))
 	return -1; // erreur
     music.setLoop(false);
-    music.setPlayingOffset(sf::seconds(120));
     music.play();
+
+    LifeBar Lb1(20, 0);
+    LifeBar Lb2(1890, 1);
+
+    sf::Sprite bgSprite;
+    bgSprite.setTexture(bgTexture);
 
     while (window.isOpen())
     {
+      Lb1.Set(player1.getLife());
+      Lb2.Set(player2.getLife());
+
 	if (music.getStatus() == sf::SoundSource::Status::Stopped)
 	{
 	    lit++;
@@ -144,6 +160,9 @@ int main() {
 	//sf::Vector2f movement(0.f, 0.f);
 	// draw
 	window.clear();
+	window.draw(bgSprite);
+	window.draw(Lb1.Get());
+	window.draw(Lb2.Get());
 	window.draw(player1.getASprite());
 	window.draw(player2.getASprite());
 	window.display();
