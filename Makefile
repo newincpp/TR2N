@@ -2,7 +2,8 @@ SRC	= main.cpp \
 	  Player.cpp \
 	  Attack.cpp \
 	  Animation.cpp \
-	  AnimatedSprite.cpp
+	  AnimatedSprite.cpp \
+	  Input.cpp
 
 NAME	= tron
 

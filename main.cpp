@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Attack.hpp"
 #include "Player.hpp"
+#include "Input.hpp"
 #include <iostream>
 
 int main() {
@@ -46,9 +47,16 @@ int main() {
 	    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		window.close();
 	}
-	player1.update();
-
-
+	//	player1.update();
+	
+	bool  movecheck;
+	Input lol("248");
+	while (42)
+	  {
+	    movecheck = lol.check();
+	    std::cout<<movecheck<<std::endl;
+	  }
+	
 	// if a key was pressed set the correct animation and move correctly
 	sf::Vector2f movement(0.f, 0.f);
 	// draw
