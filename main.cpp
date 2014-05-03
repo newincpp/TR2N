@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio/Music.hpp>
 #include <unistd.h>
 #include "Attack.hpp"
 #include "Player.hpp"
@@ -45,6 +46,13 @@ int main() {
 
     player1.start(0);
     player2.start(0);
+
+    //cool music is cool
+    sf::Music music;
+    if (!music.openFromFile("deadlyClass.ogg"))
+      return -1; // erreur
+    music.play();
+
     while (window.isOpen())
     {
 	sf::Event event;
