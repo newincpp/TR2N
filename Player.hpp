@@ -14,9 +14,8 @@ class Player {
 	sf::IntRect _position;
 	Attack &_attack;
 	int _currentFrame;
-	std::vector<Animation> _animationList;
-	std::vector<int> _attackLife;
-	std::vector<Input> _inputList;
+	std::vector<std::pair<Animation, Input>> _animationList;
+	std::vector<std::pair<std::pair<int, int>, int>> _moveLife;
 	Player();
 	Player(Player const &);
 	Player const &operator=(Player const &);
@@ -27,7 +26,7 @@ class Player {
 	void setVs(Player*);
 	int getLife() const;
 	void setLife(int);
-	void addAttack(Attack &, int, Animation &, Input);//attack and life other player will eventually loose
+	void addAttack(Attack &, int, Animation &, Input, std::pair<int, int>);//attack and life other player will eventually loose
 	void tryAttack();
 	bool update(); //return false when player is dead
 	sf::IntRect const &getPosition() const;

@@ -18,11 +18,10 @@ void Player::setLife(int life) {
     _life = life;
 }
 
-void Player::addAttack(Attack &newAttack, int attackLife, Animation &getAnimation, Input i) {
+void Player::addAttack(Attack &newAttack, int attackLife, Animation &getAnimation, Input i, std::pair<int, int> move) {
     _attack = newAttack;
-    _animationList.push_back(getAnimation);
-    _attackLife.push_back(attackLife);
-    _inputList.push_back(i);
+    _animationList.push_back(std::make_pair(getAnimation, i));
+    _moveLife.push_back(std::make_pair(move, attackLife));
 }
 
 void Player::tryAttack() {
@@ -30,18 +29,18 @@ void Player::tryAttack() {
     bool res;
 
     if (_animationList.size() > 0 && _otherPlayer != NULL) {
-	for (unsigned int j = 0; j < _inputList.size(); ++j) {
-	    if ((res = _inputList[j].check()) == true) {
+	for (unsigned int j = 0; j < _animationList.size(); ++j) {
+	    if ((res = _animationList[j].second.check()) == true) {
 		i = j;
-		j = _inputList.size();
+		j = _animationList.size();
 	    }
 	}
 	if (res == true) {
-	    _attack.play(_position, _animationList[i]);
+	    _attack.play(_position, _animationList[i].first);
 	    _shouldStop = false;
 	    _currentAttack = i;
 	    if (_attack.update(_otherPlayer->getPosition()) == false) {
-	        _otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[i]);
+	        _otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[i].second);
 	        _shouldStop = true;
 	    }
 	}
@@ -57,14 +56,14 @@ bool Player::update() {
 	return (false);
     }
     if (_shouldStop == false) {
-	_attack.getAnimatedSprite().move(_position.left, _position.top);
+	_attack.getAnimatedSprite().move(_moveLife[_currentAttack].first.second, _moveLife[_currentAttack].first.first);
     }
     if (_attack.isPlaying() == false) {
 	_shouldStop = true;
 	tryAttack();
     }
     if (_attack.update(_otherPlayer->getPosition()) == false) {
-	_otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[_currentAttack]);
+	_otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[_currentAttack].second);
 	_shouldStop = true;
     }
     return (true);
@@ -89,6 +88,6 @@ void Player::setVs(Player* other) {
 }
 
 void Player::start(int i) {
-    _attack.play(_position, _animationList[i]);
+    _attack.play(_position, _animationList[i].first);
     _currentAttack = i;
 }

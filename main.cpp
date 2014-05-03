@@ -21,18 +21,18 @@ int main() {
 	return 1;
     }
 
-    Animation walkingAnimationDown1;
-    walkingAnimationDown1.setSpriteSheet(texture);
-    walkingAnimationDown1.addFrame(sf::IntRect(32, 0, 32, 32));
-    walkingAnimationDown1.addFrame(sf::IntRect(64, 0, 32, 32));
-    walkingAnimationDown1.addFrame(sf::IntRect(32, 0, 32, 32));
-    walkingAnimationDown1.addFrame(sf::IntRect( 0, 0, 32, 32));
-    Animation walkingAnimationDown;
-    walkingAnimationDown.setSpriteSheet(texture);
-    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect(64, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect( 0, 0, 32, 32));
+    Animation walkingAnimationLeft;
+    walkingAnimationLeft.setSpriteSheet(texture);
+    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect(64, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
+    walkingAnimationLeft.addFrame(sf::IntRect( 0, 32, 32, 32));
+    Animation walkingAnimationRight;
+    walkingAnimationRight.setSpriteSheet(texture);
+    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect(64, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
+    walkingAnimationRight.addFrame(sf::IntRect( 0, 64, 32, 32));
 
     AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
     AnimatedSprite animatedSprite1(sf::seconds(0.2), true, false);
@@ -50,10 +50,10 @@ int main() {
     player1.setVs(&player2);
     Attack a(animatedSprite, 2, player1.getPosition());
     Attack b(animatedSprite1, 2, player2.getPosition());
-    player1.addAttack(a, 90, walkingAnimationDown, i1);
-    player2.addAttack(b, 90, walkingAnimationDown1, i2);
-    player1.setPosition(0, 1);
-    player2.setPosition(0, -1);
+    player1.addAttack(a, 90, walkingAnimationRight, i1, std::make_pair(0, 1));
+    player1.addAttack(a, 90, walkingAnimationLeft, i2, std::make_pair(0, -1));
+    player2.addAttack(b, 90, walkingAnimationLeft, i1, std::make_pair(0, -1));
+    player2.addAttack(b, 90, walkingAnimationRight, i2, std::make_pair(0, 1));
 
     player1.start(0);
     player2.start(0);
