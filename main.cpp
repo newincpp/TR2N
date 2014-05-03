@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio/Music.hpp>
+#include <SFML/System/Time.hpp>
 #include <unistd.h>
 #include <list>
 #include "Attack.hpp"
@@ -36,24 +37,24 @@ int main() {
 
     AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
     AnimatedSprite animatedSprite1(sf::seconds(0.2), true, false);
-    animatedSprite.setPosition(sf::Vector2f(screenDimensions / 2));
-    animatedSprite1.setPosition(sf::Vector2f(screenDimensions / 2));
+    animatedSprite.setPosition(sf::Vector2f(screenDimensions.x / 2 - 30, screenDimensions.y / 2));
+    animatedSprite1.setPosition(sf::Vector2f(screenDimensions.x / 2 + 30, screenDimensions.y / 2));
 
     sf::Clock frameClock;
 
     Attack c(animatedSprite, 2, sf::IntRect(0, 0, 0, 0));
     Attack d(animatedSprite1, 2, sf::IntRect(0, 0, 0, 0));
-    Player player1(c);
-    Player player2(&player1, d);
+    Player player1(c, screenDimensions.x / 2 - 30, screenDimensions.y / 2);
+    Player player2(d, screenDimensions.x / 2 + 30, screenDimensions.y / 2, &player1);
     Input i1("248", 60);
     Input i2("268", 60);
     player1.setVs(&player2);
     Attack a(animatedSprite, 2, player1.getPosition());
     Attack b(animatedSprite1, 2, player2.getPosition());
-    player1.addAttack(a, 90, walkingAnimationRight, i1, std::make_pair(0, 1));
-    player1.addAttack(a, 90, walkingAnimationLeft, i2, std::make_pair(0, -1));
-    player2.addAttack(b, 90, walkingAnimationLeft, i1, std::make_pair(0, -1));
-    player2.addAttack(b, 90, walkingAnimationRight, i2, std::make_pair(0, 1));
+    player1.addAttack(a, 10, walkingAnimationRight, i1, std::make_pair(0, 1));
+    player1.addAttack(a, 10, walkingAnimationLeft, i2, std::make_pair(0, -1));
+    player2.addAttack(b, 10, walkingAnimationLeft, i1, std::make_pair(0, -1));
+    player2.addAttack(b, 10, walkingAnimationRight, i2, std::make_pair(0, 1));
 
     player1.start(0);
     player2.start(0);
@@ -61,12 +62,15 @@ int main() {
     //cool music is cool
 
     std::list<std::string> musicList;
-    musicList.push_back("deadlyClass.ogg");
     musicList.push_back("testflight.ogg");
+    musicList.push_back("deadlyClass.ogg");
+    musicList.push_back("deadlyClass.ogg");
     std::list<std::string>::const_iterator lit(musicList.begin());
     sf::Music music;
     if (!music.openFromFile(*lit))
       return -1; // erreur
+    music.setLoop(false);
+    music.setPlayingOffset(sf::seconds(120));
     music.play();
 
     while (window.isOpen())
@@ -74,10 +78,10 @@ int main() {
       if (music.getStatus() == sf::SoundSource::Status::Stopped)
 	{
 	  lit++;
-	  //if (!music.openFromFile(*lit))
-	  if (lit == musicList.end()) {
+	  if (lit == musicList.end())
 	    lit = musicList.begin();
-	  }
+	  if (!music.openFromFile(*lit))
+	    return (-1);
 	  music.play();
 	}
 	sf::Event event;

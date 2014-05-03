@@ -3,12 +3,10 @@
 
 Attack::Attack(AnimatedSprite &a, int collisionFrame, sf::IntRect rect) : _animatedSprite(a), _collisionFrame(collisionFrame), _currentFrame(0), _rect(rect) {
     _animatedSprite.setLooped(false);
-    _animatedSprite.play();
 }
 
 Attack::Attack(Attack const &src) : _animatedSprite(src.getAnimatedSprite()), _collisionFrame(src.getCollisionFrame()), _currentFrame(0), _rect(src.getRect()) {
     _animatedSprite.setLooped(false);
-    _animatedSprite.play();
 }
 
 Attack const &Attack::operator=(Attack const &src) {
@@ -33,14 +31,19 @@ sf::IntRect const &Attack::getRect() const {
 bool Attack::testHitbox(sf::IntRect const &collisionRect) {
     bool ret;
 
-    _rect.left += _offset.left;
+    _rect.left = _offset.left;
+    _rect.top = _offset.top;
     ret = _rect.intersects(collisionRect);
-    _rect.left -= _offset.left;
     return (ret);
 }
 
+void Attack::updateOffset(sf::IntRect const &offset) {
+    _offset.left = offset.left;
+    _offset.top = offset.top;
+}
+
 bool Attack::update(sf::IntRect const &collisionRect) {
-    bool ret = true;
+    bool ret = false;
 
     ++_currentFrame;
     if (_currentFrame == _collisionFrame) {
