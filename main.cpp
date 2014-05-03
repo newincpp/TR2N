@@ -85,8 +85,8 @@ int main() {
 
     Attack c(animatedSprite, 2, sf::IntRect(0, 0, 0, 0));
     Attack d(animatedSprite1, 2, sf::IntRect(0, 0, 0, 0));
-    Player player1(c, 100, 200);
-    Player player2(d, 1400, 200, &player1);
+    Player player1(c, 100, 200, 0);
+    Player player2(d, 1400, 200, 2, &player1);
     Input i1("248", 60);
     Input i2("268", 60);
     Input i3("464", 60);
