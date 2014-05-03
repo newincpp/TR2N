@@ -82,8 +82,8 @@ int main() {
 	standAnimBlue.addFrame(sf::IntRect(i, 0, 626, 724));
     }
 
-    AnimatedSprite animatedSprite(sf::seconds(0.01), true, false);
-    AnimatedSprite animatedSprite1(sf::seconds(0.01), true, false);
+    AnimatedSprite animatedSprite(sf::seconds(0.05), true, false);
+    AnimatedSprite animatedSprite1(sf::seconds(0.05), true, false);
     animatedSprite.setPosition(sf::Vector2f(412, 612));
     animatedSprite1.setScale(-1, 1);
     animatedSprite1.setPosition(sf::Vector2f(1812, 612));
