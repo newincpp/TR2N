@@ -15,21 +15,12 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(screenDimensions.x, screenDimensions.y), "Animations!");
     window.setFramerateLimit(60);
 
-    // load texture (spritesheet)
-    sf::Texture texture;
-    if (!texture.loadFromFile("anim.png"))
-    {
-	std::cout << "Failed to load player spritesheet!" << std::endl;
-	return 1;
-    }
-    
     sf::Texture bgTexture;
     if (!bgTexture.loadFromFile("bg.png"))
     {
 	std::cout << "Failed to load ta mere(bg)!" << std::endl;
 	return 1;
     }
-
     sf::Texture texta;
     if (!texta.loadFromFile("blends/AtkAnimSprites.png")) {
 	std::cout << "Failed to load player spritesheet!" << std::endl;
@@ -50,36 +41,52 @@ int main() {
     for (int i = 0; i < 10017; i += 626) {
 	AtkAnimBlue.addFrame(sf::IntRect(i, 0, 626, 724));
     }
-    Animation walkingAnimationLeft;
-    walkingAnimationLeft.setSpriteSheet(texture);
-    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
-    walkingAnimationLeft.addFrame(sf::IntRect(64, 32, 32, 32));
-    walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
-    walkingAnimationLeft.addFrame(sf::IntRect( 0, 32, 32, 32));
-    Animation walkingAnimationRight;
-    walkingAnimationRight.setSpriteSheet(texture);
-    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
-    walkingAnimationRight.addFrame(sf::IntRect(64, 64, 32, 32));
-    walkingAnimationRight.addFrame(sf::IntRect(32, 64, 32, 32));
-    walkingAnimationRight.addFrame(sf::IntRect( 0, 64, 32, 32));
-    Animation walkingAnimationUp;
-    walkingAnimationUp.setSpriteSheet(texture);
-    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
-    walkingAnimationUp.addFrame(sf::IntRect(64, 96, 32, 32));
-    walkingAnimationUp.addFrame(sf::IntRect(32, 96, 32, 32));
-    walkingAnimationUp.addFrame(sf::IntRect( 0, 96, 32, 32));
-    Animation walkingAnimationDown;
-    walkingAnimationDown.setSpriteSheet(texture);
-    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect(64, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
-    walkingAnimationDown.addFrame(sf::IntRect( 0, 0, 32, 32));
+    sf::Texture textc;
+    if (!textc.loadFromFile("blends/dashAnimSprites.png")) {
+	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    Animation DashAnim;
+    DashAnim.setSpriteSheet(textc);
+    for (int i = 0; i < 10017; i += 626) {
+	DashAnim.addFrame(sf::IntRect(i, 0, 626, 724));
+    }
+    sf::Texture textd;
+    if (!textd.loadFromFile("blends/dashAnimSpritesBlue.png")) {
+	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    Animation DashAnimBlue;
+    DashAnimBlue.setSpriteSheet(textd);
+    for (int i = 0; i < 10017; i += 626) {
+	DashAnimBlue.addFrame(sf::IntRect(i, 0, 626, 724));
+    }
+    sf::Texture texte;
+    if (!texte.loadFromFile("blends/standAnim.png")) {
+	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    Animation standAnim;
+    standAnim.setSpriteSheet(texte);
+    for (int i = 0; i < 10017; i += 626) {
+	standAnim.addFrame(sf::IntRect(i, 0, 626, 724));
+    }
+    sf::Texture textf;
+    if (!textf.loadFromFile("blends/standAnimBlue.png")) {
+	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    Animation standAnimBlue;
+    standAnimBlue.setSpriteSheet(textf);
+    for (int i = 0; i < 10017; i += 626) {
+	standAnimBlue.addFrame(sf::IntRect(i, 0, 626, 724));
+    }
 
     AnimatedSprite animatedSprite(sf::seconds(0.01), true, false);
     AnimatedSprite animatedSprite1(sf::seconds(0.01), true, false);
-    animatedSprite.setPosition(sf::Vector2f(100, 200));
+    animatedSprite.setPosition(sf::Vector2f(250, 450));
     animatedSprite1.setScale(-1, 1);
-    animatedSprite1.setPosition(sf::Vector2f(1400, 200));
+    animatedSprite1.setPosition(sf::Vector2f(1650, 450));
 
     sf::Clock frameClock;
 
@@ -94,14 +101,14 @@ int main() {
     player1.setVs(&player2);
     Attack a(animatedSprite, 2, player1.getPosition());
     Attack b(animatedSprite1, 2, player2.getPosition());
-    player1.addAttack(a, 0, AtkAnim, i1, std::make_pair(0, 1));
-    player1.addAttack(a, 0, walkingAnimationLeft, i2, std::make_pair(0, -1));
-    player1.addAttack(a, 0, walkingAnimationUp, i3, std::make_pair(0, 0));
-    player1.addAttack(a, 0, walkingAnimationDown, i4, std::make_pair(0, 0));
-    player2.addAttack(b, 10, AtkAnimBlue, i1, std::make_pair(0, -1));
-    player2.addAttack(b, 10, walkingAnimationRight, i2, std::make_pair(0, 1));
-    player2.addAttack(b, 0, walkingAnimationUp, i3, std::make_pair(0, 0));
-    player2.addAttack(b, 0, walkingAnimationDown, i4, std::make_pair(0, 0));
+    player1.addAttack(a, 0, standAnim, i2, std::make_pair(0, 0));
+    player1.addAttack(a, 10, AtkAnim, i1, std::make_pair(0, 1));
+    player1.addAttack(a, 0, DashAnim, i3, std::make_pair(0, -4));
+    player1.addAttack(a, 0, DashAnim, i4, std::make_pair(0, 4));
+    player2.addAttack(b, 0, standAnimBlue, i2, std::make_pair(0, 0));
+    player2.addAttack(b, 10, AtkAnimBlue, i1, std::make_pair(0, 1));
+    player2.addAttack(b, 0, DashAnimBlue, i3, std::make_pair(0, -4));
+    player2.addAttack(b, 0, DashAnimBlue, i4, std::make_pair(0, 4));
 
     player1.start(0);
     player2.start(0);
