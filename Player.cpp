@@ -58,7 +58,6 @@ bool Player::update() {
     }
     if (_shouldStop == false) {
 	_attack.getAnimatedSprite().move(_position.left, _position.top);
-	std::cout << "move" << std::endl;
     }
     if (_attack.isPlaying() == false) {
 	_shouldStop = true;
