@@ -10,7 +10,7 @@ CXXFLAGS= -Wall -Wextra -W -std=c++0x -g
 
 OBJS	= $(SRC:.cpp=.o)
 
-LDFLAGS = `pkg-config sfml-all --libs`
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-audio -lsfml-network -lsfml-system
 
 RM	= rm -f
 
