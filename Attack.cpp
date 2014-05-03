@@ -62,6 +62,7 @@ void Attack::play(sf::IntRect const &offset, Animation &animation) {
     _currentFrame = 0;
     _offset = offset;
     _animatedSprite.play(animation);
+    _animatedSprite.setPosition(offset.left, offset.top);
 }
 
 AnimatedSprite &Attack::getAnimatedSprite() const {

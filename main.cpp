@@ -22,6 +22,26 @@ int main() {
 	return 1;
     }
 
+    sf::Texture texta;
+    if (!texta.loadFromFile("blends/AtkAnimSprites.png")) {
+	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    Animation AtkAnim;
+    AtkAnim.setSpriteSheet(texta);
+    for (int i = 0; i < 10017; i += 626) {
+	AtkAnim.addFrame(sf::IntRect(i, 0, 626, 724));
+    }
+    sf::Texture textb;
+    if (!textb.loadFromFile("blends/AtkAnimSpritesBlue.png")) {
+	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    Animation AtkAnimBlue;
+    AtkAnimBlue.setSpriteSheet(textb);
+    for (int i = 0; i < 10017; i += 626) {
+	AtkAnimBlue.addFrame(sf::IntRect(i, 0, 626, 724));
+    }
     Animation walkingAnimationLeft;
     walkingAnimationLeft.setSpriteSheet(texture);
     walkingAnimationLeft.addFrame(sf::IntRect(32, 32, 32, 32));
@@ -47,17 +67,18 @@ int main() {
     walkingAnimationDown.addFrame(sf::IntRect(32, 0, 32, 32));
     walkingAnimationDown.addFrame(sf::IntRect( 0, 0, 32, 32));
 
-    AnimatedSprite animatedSprite(sf::seconds(0.2), true, false);
-    AnimatedSprite animatedSprite1(sf::seconds(0.2), true, false);
-    animatedSprite.setPosition(sf::Vector2f(screenDimensions.x / 2 - 30, screenDimensions.y / 2));
-    animatedSprite1.setPosition(sf::Vector2f(screenDimensions.x / 2 + 30, screenDimensions.y / 2));
+    AnimatedSprite animatedSprite(sf::seconds(0.01), true, false);
+    AnimatedSprite animatedSprite1(sf::seconds(0.01), true, false);
+    animatedSprite.setPosition(sf::Vector2f(100, 200));
+    animatedSprite1.setScale(-1, 1);
+    animatedSprite1.setPosition(sf::Vector2f(1400, 200));
 
     sf::Clock frameClock;
 
     Attack c(animatedSprite, 2, sf::IntRect(0, 0, 0, 0));
     Attack d(animatedSprite1, 2, sf::IntRect(0, 0, 0, 0));
-    Player player1(c, screenDimensions.x / 2 - 33, screenDimensions.y / 2);
-    Player player2(d, screenDimensions.x / 2 + 33, screenDimensions.y / 2, &player1);
+    Player player1(c, 100, 200);
+    Player player2(d, 1400, 200, &player1);
     Input i1("248", 60);
     Input i2("268", 60);
     Input i3("464", 60);
@@ -65,11 +86,11 @@ int main() {
     player1.setVs(&player2);
     Attack a(animatedSprite, 2, player1.getPosition());
     Attack b(animatedSprite1, 2, player2.getPosition());
-    player1.addAttack(a, 10, walkingAnimationRight, i1, std::make_pair(0, 1));
-    player1.addAttack(a, 10, walkingAnimationLeft, i2, std::make_pair(0, -1));
+    player1.addAttack(a, 0, AtkAnim, i1, std::make_pair(0, 1));
+    player1.addAttack(a, 0, walkingAnimationLeft, i2, std::make_pair(0, -1));
     player1.addAttack(a, 0, walkingAnimationUp, i3, std::make_pair(0, 0));
     player1.addAttack(a, 0, walkingAnimationDown, i4, std::make_pair(0, 0));
-    player2.addAttack(b, 10, walkingAnimationLeft, i1, std::make_pair(0, -1));
+    player2.addAttack(b, 10, AtkAnimBlue, i1, std::make_pair(0, -1));
     player2.addAttack(b, 10, walkingAnimationRight, i2, std::make_pair(0, 1));
     player2.addAttack(b, 0, walkingAnimationUp, i3, std::make_pair(0, 0));
     player2.addAttack(b, 0, walkingAnimationDown, i4, std::make_pair(0, 0));
