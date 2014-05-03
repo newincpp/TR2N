@@ -32,7 +32,6 @@ void Player::tryAttack() {
     if (_animationList.size() > 0 && _otherPlayer != NULL) {
 	for (unsigned int j = 0; j < _inputList.size(); ++j) {
 	    if ((res = _inputList[j].check()) == true) {
-		std::cout << "yay" << std::endl;
 		i = j;
 		j = _inputList.size();
 	    }
@@ -41,7 +40,7 @@ void Player::tryAttack() {
 	    _attack.play(_position, _animationList[i]);
 	    _shouldStop = false;
 	    _currentAttack = i;
-	    if (_attack.update(_otherPlayer->getPosition()) == true) {
+	    if (_attack.update(_otherPlayer->getPosition()) == false) {
 	        _otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[i]);
 	        _shouldStop = true;
 	    }
@@ -58,25 +57,31 @@ bool Player::update() {
 	return (false);
     }
     if (_shouldStop == false) {
-	_position.left = 50;
-	_position.top = 50;
+	_attack.getAnimatedSprite().move(_position.left, _position.top);
+	std::cout << "move" << std::endl;
     }
     if (_attack.isPlaying() == false) {
+	_shouldStop = true;
 	tryAttack();
     }
-    if (_attack.update(_otherPlayer->getPosition()) == true) {
+    if (_attack.update(_otherPlayer->getPosition()) == false) {
 	_otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[_currentAttack]);
 	_shouldStop = true;
     }
     return (true);
 }
 
-sf::IntRect const &Player::getPosition() {
+sf::IntRect const &Player::getPosition() const {
     return (_position);
 }
 
+void Player::setPosition(int x, int y) {
+    _position.top = x;
+    _position.left = y;
+    _attack.getAnimatedSprite().move(_position.left, _position.top);
+}
+
 AnimatedSprite Player::getASprite() const {
-    //_attack.getAnimatedSprite().move(_position.left, _position.top);
     return (_attack.getAnimatedSprite());
 }
 

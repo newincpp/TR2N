@@ -30,7 +30,8 @@ class Player {
 	void addAttack(Attack &, int, Animation &, Input);//attack and life other player will eventually loose
 	void tryAttack();
 	bool update(); //return false when player is dead
-	sf::IntRect const &getPosition();
+	sf::IntRect const &getPosition() const;
+	void setPosition(int x, int y);
 	AnimatedSprite getASprite() const;
 	void start(int);
 };

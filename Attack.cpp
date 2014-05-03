@@ -40,7 +40,7 @@ bool Attack::testHitbox(sf::IntRect const &collisionRect) {
 }
 
 bool Attack::update(sf::IntRect const &collisionRect) {
-    bool ret = false;
+    bool ret = true;
 
     ++_currentFrame;
     if (_currentFrame == _collisionFrame) {
