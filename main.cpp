@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio/Music.hpp>
+#include <SFML/System/Time.hpp>
 #include <unistd.h>
 #include <list>
 #include "Attack.hpp"
@@ -61,12 +62,15 @@ int main() {
     //cool music is cool
 
     std::list<std::string> musicList;
-    musicList.push_back("deadlyClass.ogg");
     musicList.push_back("testflight.ogg");
+    musicList.push_back("deadlyClass.ogg");
+    musicList.push_back("deadlyClass.ogg");
     std::list<std::string>::const_iterator lit(musicList.begin());
     sf::Music music;
     if (!music.openFromFile(*lit))
       return -1; // erreur
+    music.setLoop(false);
+    music.setPlayingOffset(sf::seconds(120));
     music.play();
 
     while (window.isOpen())
@@ -74,10 +78,10 @@ int main() {
       if (music.getStatus() == sf::SoundSource::Status::Stopped)
 	{
 	  lit++;
-	  //if (!music.openFromFile(*lit))
-	  if (lit == musicList.end()) {
+	  if (lit == musicList.end())
 	    lit = musicList.begin();
-	  }
+	  if (!music.openFromFile(*lit))
+	    return (-1);
 	  music.play();
 	}
 	sf::Event event;
