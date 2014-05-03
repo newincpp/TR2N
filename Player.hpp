@@ -13,7 +13,6 @@ class Player {
 	sf::Sprite _texture;
 	sf::IntRect _position;
 	std::vector<Attack> _attackList;
-	std::vector<int> _attackLife;
 	//std::vector<inputSet&> _attackInput;
 	Player();
 	Player(Player const &);
@@ -22,6 +21,7 @@ class Player {
 	Player(sf::Texture &);
 	Player(sf::Texture &, Player *);
 	~Player();
+	void setVs(Player*);
 	int getLife() const;
 	void setLife(int);
 	void addAttack(Attack &, int); //+inputSet

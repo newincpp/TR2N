@@ -33,13 +33,8 @@ sf::IntRect const &Attack::getRect() const {
 bool Attack::testHitbox(sf::IntRect const &collisionRect) {
     bool ret;
 
-    std::cout << "hey" << std::endl;
-    std::cout << "rect: l=" << _rect.left << " t=" << _rect.top << " w=" << _rect.width << " h=" << _rect.height << std::endl;
-    std::cout << "offset: l=" << collisionRect.left << " t=" << collisionRect.top << " w=" << collisionRect.width << " h=" << collisionRect.height << std::endl;
     _rect.left += _offset.left;
-    std::cout << "int:" << std::endl;
     ret = _rect.intersects(collisionRect);
-    std::cout << "int ok!" << std::endl;
     _rect.left -= _offset.left;
     return (ret);
 }
@@ -49,12 +44,9 @@ bool Attack::update(sf::IntRect const &collisionRect) {
 
     ++_currentFrame;
     if (_currentFrame == _collisionFrame) {
-    std::cout << "test" << std::endl;
 	ret = testHitbox(collisionRect);
     }
-    std::cout << "hay2" << std::endl;
     _animatedSprite.update(_clock.restart());
-    std::cout << "hay3" << std::endl;
     return (ret);
 }
 
@@ -71,4 +63,12 @@ void Attack::play(sf::IntRect const &offset) {
 
 AnimatedSprite &Attack::getAnimatedSprite() const {
     return (_animatedSprite);
+}
+
+unsigned int Attack::getInpact() const {
+    return _inpact;
+}
+
+void Attack::setInpact(unsigned int i) {
+    _inpact = i;
 }

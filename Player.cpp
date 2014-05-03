@@ -19,9 +19,8 @@ void Player::setLife(int life) {
 }
 
 void Player::addAttack(Attack &newAttack, int attackLife) {
+    newAttack.setInpact(attackLife);
     _attackList.push_back(newAttack);
-    _attackLife.push_back(attackLife);
-    //_attackInput.push_back(attackInput);
 }
 
 void Player::tryAttack(/*inputSet &input*/) {
@@ -33,7 +32,7 @@ void Player::tryAttack(/*inputSet &input*/) {
 	_shouldStop = false;
 	_currentAttack = i;
 	if (_attackList[i].update(_otherPlayer->getPosition()) == true) {
-	    _otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[i]);
+	    _otherPlayer->setLife(_otherPlayer->getLife() - _attackList[i].getInpact());
 	    _shouldStop = true;
 	}
 	//}
@@ -41,12 +40,17 @@ void Player::tryAttack(/*inputSet &input*/) {
 }
 
 bool Player::update() {
+    if (!_otherPlayer) {
+	std::cerr << "FUCK YOU SERIOUSLY  FUCK ! YOU !" << std::endl;
+	return false;
+    }
     if (_life <= 0) {
 	return (false);
     }
     _otherPlayer->getPosition();
+    const sf::IntRect& r = _otherPlayer->getPosition();
     if (_attackList[_currentAttack].update(_otherPlayer->getPosition()) == true) {
-	_otherPlayer->setLife(_otherPlayer->getLife() - _attackLife[_currentAttack]);
+	_otherPlayer->setLife(_otherPlayer->getLife() - _attackList[_currentAttack].getInpact());
 	_shouldStop = true;
     }
     return (true);
@@ -58,4 +62,8 @@ sf::IntRect const &Player::getPosition() {
 
 AnimatedSprite const &Player::getASprite() const {
     return (_attackList[_currentAttack].getAnimatedSprite());
+}
+
+void Player::setVs(Player* other) {
+    _otherPlayer = other;
 }
