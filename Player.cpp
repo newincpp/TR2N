@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Player.hpp"
 
-Player::Player(Attack &a, int x, int y, int joystick) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a), _joy(joystick) {
+Player::Player(Attack &a, int x, int y, int joystick) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a), _joy(joystick), _isStun(false), _stunFrame(0) {
 }
 
-Player::Player(Attack &a, int x, int y,int joystick, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a), _joy(joystick) {
+Player::Player(Attack &a, int x, int y,int joystick, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a), _joy(joystick), _isStun(false), _stunFrame(0) {
 }
 
 Player::~Player() {
@@ -40,9 +40,16 @@ void Player::tryAttack() {
 	_currentAttack = i;
 	if (_attack.update(_otherPlayer->getPosition()) == true) {
 	    _otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[i].second);
+	    _otherPlayer->setStun(true);
 	    _shouldStop = true;
 	}
     }
+}
+
+void Player::setStun(bool stun) {
+    _isStun = stun;
+    _stunFrame = 0;
+    _attack.play(_position, _animationList[1].first);
 }
 
 bool Player::update() {
@@ -54,31 +61,42 @@ bool Player::update() {
     if (_life <= 0) {
 	return (false);
     }
-    if (_attack.isPlaying() == false || (_currentAttack == 0)) {
-	_shouldStop = true;
-	tryAttack();
-    }
-    dec = false;
-    if (_attack.isPlaying() == true && _attack.testHitbox(_otherPlayer->getPosition()) == false) {
-	_position.top += _moveLife[_currentAttack].first.first;
-	_position.left += _moveLife[_currentAttack].first.second;
-	_attack.updateOffset(_position);
-	if (_attack.testHitbox(_otherPlayer->getPosition()) == false) {
-	    _attack.getAnimatedSprite().move(_moveLife[_currentAttack].first.second, _moveLife[_currentAttack].first.first);
-	} else {
-	    dec = true;
-	}
-    }
-    if (_shouldStop == false && _attack.update(_otherPlayer->getPosition()) == true) {
-	_otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[_currentAttack].second);
-	_shouldStop = true;
-    } else if (_shouldStop == true) {
+    if (_isStun == true && _stunFrame < 40) {
 	_attack.update(_otherPlayer->getPosition());
+	++_stunFrame;
+    } else if (_isStun == true) {
+	_isStun = false;
+	_stunFrame = 0;
+	_attack.stop();
     }
-    if (dec == true) {
-	_position.top -= _moveLife[_currentAttack].first.first;
-	_position.left -= _moveLife[_currentAttack].first.second;
-	_attack.updateOffset(_position);
+    if (_isStun == false) {
+	if (_attack.isPlaying() == false || (_currentAttack == 0)) {
+	    _shouldStop = true;
+	    tryAttack();
+	}
+	dec = false;
+	if (_attack.isPlaying() == true && _attack.testHitbox(_otherPlayer->getPosition()) == false) {
+	    _position.top += _moveLife[_currentAttack].first.first;
+	    _position.left += _moveLife[_currentAttack].first.second;
+	    _attack.updateOffset(_position);
+	    if (_attack.testHitbox(_otherPlayer->getPosition()) == false) {
+		_attack.getAnimatedSprite().move(_moveLife[_currentAttack].first.second, _moveLife[_currentAttack].first.first);
+	    } else {
+		dec = true;
+	    }
+	}
+	if (_shouldStop == false && _attack.update(_otherPlayer->getPosition()) == true) {
+	    _otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[_currentAttack].second);
+	    _otherPlayer->setStun(true);
+	    _shouldStop = true;
+	} else if (_shouldStop == true) {
+	    _attack.update(_otherPlayer->getPosition());
+	}
+	if (dec == true) {
+	    _position.top -= _moveLife[_currentAttack].first.first;
+	    _position.left -= _moveLife[_currentAttack].first.second;
+	    _attack.updateOffset(_position);
+	}
     }
     return (true);
 }
