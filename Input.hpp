@@ -23,6 +23,8 @@ private:
       return (4);
     if (a == '8')
       return (8);
+    if (a == '5')
+      return (16);
     return (0);
   }
   inline char	_keyPressed(int a) {
@@ -37,11 +39,14 @@ private:
       lol |= mask('6');
     if(sf::Joystick::isButtonPressed(a, 2) || sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
       lol |= mask('8');
+    if (!lol)
+      lol = mask('5');
     return(lol);
   }
 public:
   Input(std::string, unsigned int);
   bool check(int); 
+  void clear();
 };
 
 #endif

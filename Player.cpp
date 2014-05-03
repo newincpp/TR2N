@@ -35,14 +35,12 @@ void Player::tryAttack() {
 		j = _animationList.size();
 	    }
 	}
-	if (res == true) {
-	    _attack.play(_position, _animationList[i].first);
-	    _shouldStop = false;
-	    _currentAttack = i;
-	    if (_attack.update(_otherPlayer->getPosition()) == true) {
-		_otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[i].second);
-		_shouldStop = true;
-	    }
+	_attack.play(_position, _animationList[i].first);
+	_shouldStop = false;
+	_currentAttack = i;
+	if (_attack.update(_otherPlayer->getPosition()) == true) {
+	    _otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[i].second);
+	    _shouldStop = true;
 	}
     }
 }
@@ -56,7 +54,7 @@ bool Player::update() {
     if (_life <= 0) {
 	return (false);
     }
-    if (_attack.isPlaying() == false) {
+    if (_attack.isPlaying() == false || (_currentAttack == 0)) {
 	_shouldStop = true;
 	tryAttack();
     }
