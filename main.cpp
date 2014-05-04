@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/System/Time.hpp>
 #include <unistd.h>
@@ -14,6 +15,17 @@ int main() {
     sf::Vector2i screenDimensions(1920,1080);
     sf::RenderWindow window(sf::VideoMode(screenDimensions.x, screenDimensions.y), "Animations!");
     window.setFramerateLimit(60);
+
+    sf::Font tr;
+
+    tr.loadFromFile("Tr2n.ttf");
+    sf::Text loading("loading", tr, 100);
+    loading.setColor(sf::Color::Cyan);
+    loading.setPosition(750, 490);
+
+    window.clear();
+    window.draw(loading);
+    window.display();
 
     sf::Texture bgTexture;
     if (!bgTexture.loadFromFile("bg.png"))
@@ -84,9 +96,9 @@ int main() {
 
     AnimatedSprite animatedSprite(sf::seconds(0.05), true, false);
     AnimatedSprite animatedSprite1(sf::seconds(0.05), true, false);
-    animatedSprite.setPosition(sf::Vector2f(412, 612));
+    animatedSprite.setPosition(sf::Vector2f(450, 450));
     animatedSprite1.setScale(-1, 1);
-    animatedSprite1.setPosition(sf::Vector2f(1812, 612));
+    animatedSprite1.setPosition(sf::Vector2f(1850, 450));
 
     sf::Clock frameClock;
 
@@ -118,7 +130,6 @@ int main() {
     std::list<std::string> musicList;
     musicList.push_back("testflight.ogg");
     musicList.push_back("deadlyClass.ogg");
-    musicList.push_back("deadlyClass.ogg");
     std::list<std::string>::const_iterator lit(musicList.begin());
     sf::Music music;
     if (!music.openFromFile(*lit))
@@ -129,8 +140,17 @@ int main() {
     LifeBar Lb1(20, 0);
     LifeBar Lb2(1890, 1);
 
+    Lb2.SetColor(sf::Color::Cyan);
     sf::Sprite bgSprite;
     bgSprite.setTexture(bgTexture);
+
+
+    sf::Text akai("AKAI", tr, 40);
+    sf::Text ao("AO", tr, 40);
+    akai.setColor(sf::Color::Red);
+    ao.setColor(sf::Color::Cyan);
+    akai.setPosition(18, 50);
+    ao.setPosition(1840, 50);
 
     while (window.isOpen())
     {
@@ -168,6 +188,8 @@ int main() {
 	// draw
 	window.clear();
 	window.draw(bgSprite);
+	window.draw(akai);
+	window.draw(ao);
 	window.draw(Lb1.Get());
 	window.draw(Lb2.Get());
 	window.draw(player1.getASprite());

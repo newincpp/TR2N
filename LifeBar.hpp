@@ -2,6 +2,7 @@
 #define LIFEBAR_H_
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
 
 class LifeBar {
 private:
@@ -10,6 +11,7 @@ private:
 public:
   LifeBar(int, bool);
   void Set(int);
+  void SetColor(sf::Color);
   const sf::RectangleShape& Get();
 };
 

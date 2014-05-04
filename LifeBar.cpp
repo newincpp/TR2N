@@ -7,6 +7,11 @@ void	LifeBar::Set(int size)
     _bar.setSize(sf::Vector2f(size * -8, 20));
 }
 
+void	LifeBar::SetColor(sf::Color col)
+{
+  _bar.setOutlineColor(col);
+}
+
 const sf::RectangleShape& LifeBar::Get()
 {
   return (_bar);
