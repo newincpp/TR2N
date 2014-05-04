@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Player.hpp"
 
-Player::Player(Attack &a, int x, int y, int joystick) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a), _joy(joystick), _isStun(false), _stunFrame(0) {
+Player::Player(Attack &a, int x, int y, int joystick) : _life(100), _otherPlayer(NULL), _currentAttack(0), _shouldStop(false), _position(x, y, 450, 450), _attack(a), _joy(joystick), _isStun(false), _stunFrame(0) {
 }
 
-Player::Player(Attack &a, int x, int y,int joystick, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(x, y, 300, 300), _attack(a), _joy(joystick), _isStun(false), _stunFrame(0) {
+Player::Player(Attack &a, int x, int y,int joystick, Player *other) : _life(100), _otherPlayer(other), _currentAttack(0), _shouldStop(false), _position(x, y, 450, 450), _attack(a), _joy(joystick), _isStun(false), _stunFrame(0) {
 }
 
 Player::~Player() {
@@ -33,6 +33,9 @@ void Player::tryAttack() {
 	    if ((res = _animationList[j].second.check(_joy)) == true) {
 		i = j;
 		j = _animationList.size();
+		for (unsigned int k = 0; k < _animationList.size(); ++k) {
+		    _animationList[k].second.clear();
+		}
 	    }
 	}
 	_attack.play(_position, _animationList[i].first);
@@ -40,7 +43,8 @@ void Player::tryAttack() {
 	_currentAttack = i;
 	if (_attack.update(_otherPlayer->getPosition()) == true) {
 	    _otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[i].second);
-	    _otherPlayer->setStun(true);
+	    if (_moveLife[i].second != 0)
+		_otherPlayer->setStun(true);
 	    _shouldStop = true;
 	}
     }
@@ -87,7 +91,8 @@ bool Player::update() {
 	}
 	if (_shouldStop == false && _attack.update(_otherPlayer->getPosition()) == true) {
 	    _otherPlayer->setLife(_otherPlayer->getLife() - _moveLife[_currentAttack].second);
-	    _otherPlayer->setStun(true);
+	    if (_moveLife[_currentAttack].second != 0)
+		_otherPlayer->setStun(true);
 	    _shouldStop = true;
 	} else if (_shouldStop == true) {
 	    _attack.update(_otherPlayer->getPosition());

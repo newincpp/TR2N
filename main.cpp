@@ -153,9 +153,9 @@ int main() {
 
     AnimatedSprite animatedSprite(sf::seconds(0.01), true, false);
     AnimatedSprite animatedSprite1(sf::seconds(0.01), true, false);
-    animatedSprite.setPosition(sf::Vector2f(450, 500));
+    animatedSprite.setPosition(sf::Vector2f(950, 500));
     animatedSprite1.setScale(-1, 1);
-    animatedSprite1.setPosition(sf::Vector2f(1450, 500));
+    animatedSprite1.setPosition(sf::Vector2f(1250, 500));
 
     sf::Clock frameClock;
 
@@ -175,15 +175,15 @@ int main() {
     player1.addAttack(a, 0, standAnim, i, std::make_pair(0, 0));
     player1.addAttack(a, 0, stun, i, std::make_pair(0, 0));
     player1.addAttack(a, 10, AtkAnim, i1, std::make_pair(0, 1));
-    player1.addAttack(a, 0, DashAnim, i3, std::make_pair(0, -4));
-    player1.addAttack(a, 0, DashAnim, i4, std::make_pair(0, 4));
+    player1.addAttack(a, 0, DashAnim, i3, std::make_pair(0, -10));
+    player1.addAttack(a, 0, DashAnim, i4, std::make_pair(0, 10));
     player1.addAttack(a, 5, fastAtk, i2, std::make_pair(0, 4));
     player1.addAttack(a, 50, Atk2Anim, i5, std::make_pair(0, 4));
     player2.addAttack(b, 0, standAnimBlue, i, std::make_pair(0, 0));
     player2.addAttack(b, 0, stunBlue, i, std::make_pair(0, 0));
     player2.addAttack(b, 10, AtkAnimBlue, i1, std::make_pair(0, -1));
-    player2.addAttack(b, 0, DashAnimBlue, i3, std::make_pair(0, 4));
-    player2.addAttack(b, 0, DashAnimBlue, i4, std::make_pair(0, -4));
+    player2.addAttack(b, 0, DashAnimBlue, i3, std::make_pair(0, 10));
+    player2.addAttack(b, 0, DashAnimBlue, i4, std::make_pair(0, -10));
     player2.addAttack(b, 5, fastAtkBlue, i2, std::make_pair(0, -4));
     player2.addAttack(b, 50, Atk2AnimBlue, i5, std::make_pair(0, -4));
 
