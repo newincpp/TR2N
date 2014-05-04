@@ -14,6 +14,7 @@ int main() {
     sf::Vector2i screenDimensions(1920,1080);
     sf::RenderWindow window(sf::VideoMode(screenDimensions.x, screenDimensions.y), "Animations!");
     window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
 
     sf::Texture bgTexture;
     if (!bgTexture.loadFromFile("bg.png"))
@@ -81,9 +82,25 @@ int main() {
     for (int i = 0; i < 10017; i += 626) {
 	standAnimBlue.addFrame(sf::IntRect(i, 0, 626, 724));
     }
+    sf::Texture textg;
+    if (!textg.loadFromFile("redStun.png")) {
+	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    Animation stun;
+    stun.setSpriteSheet(textg);
+    stun.addFrame(sf::IntRect(0, 0, 626, 724));
+    sf::Texture texth;
+    if (!texth.loadFromFile("blueStun.png")) {
+	std::cout << "Failed to load player spritesheet!" << std::endl;
+	return 1;
+    }
+    Animation stunBlue;
+    stunBlue.setSpriteSheet(texth);
+    stunBlue.addFrame(sf::IntRect(0, 0, 626, 724));
 
-    AnimatedSprite animatedSprite(sf::seconds(0.05), true, false);
-    AnimatedSprite animatedSprite1(sf::seconds(0.05), true, false);
+    AnimatedSprite animatedSprite(sf::seconds(0.01), true, false);
+    AnimatedSprite animatedSprite1(sf::seconds(0.01), true, false);
     animatedSprite.setPosition(sf::Vector2f(412, 612));
     animatedSprite1.setScale(-1, 1);
     animatedSprite1.setPosition(sf::Vector2f(1812, 612));
@@ -102,10 +119,12 @@ int main() {
     Attack a(animatedSprite, 2, player1.getPosition());
     Attack b(animatedSprite1, 2, player2.getPosition());
     player1.addAttack(a, 0, standAnim, i2, std::make_pair(0, 0));
+    player1.addAttack(a, 0, stun, i2, std::make_pair(0, 0));
     player1.addAttack(a, 10, AtkAnim, i1, std::make_pair(0, 1));
     player1.addAttack(a, 0, DashAnim, i3, std::make_pair(0, -4));
     player1.addAttack(a, 0, DashAnim, i4, std::make_pair(0, 4));
     player2.addAttack(b, 0, standAnimBlue, i2, std::make_pair(0, 0));
+    player2.addAttack(b, 0, stunBlue, i2, std::make_pair(0, 0));
     player2.addAttack(b, 10, AtkAnimBlue, i1, std::make_pair(0, 1));
     player2.addAttack(b, 0, DashAnimBlue, i3, std::make_pair(0, -4));
     player2.addAttack(b, 0, DashAnimBlue, i4, std::make_pair(0, 4));
