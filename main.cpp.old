@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/System/Time.hpp>
 #include <unistd.h>
@@ -16,16 +17,7 @@ int main() {
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
 
-    sf::Font tr;
 
-    tr.loadFromFile("Tr2n.ttf");
-    sf::Text loading("loading", tr, 100);
-    loading.setColor(sf::Color::Cyan);
-    loading.setPosition(750, 490);
-
-    window.clear();
-    window.draw(loading);
-    window.display();
 
     sf::Texture bgTexture;
     if (!bgTexture.loadFromFile("bg.png"))
@@ -114,7 +106,7 @@ int main() {
     AnimatedSprite animatedSprite1(sf::seconds(0.01), true, false);
     animatedSprite.setPosition(sf::Vector2f(412, 612));
     animatedSprite1.setScale(-1, 1);
-    animatedSprite1.setPosition(sf::Vector2f(1812, 612));
+    animatedSprite1.setPosition(sf::Vector2f(1850, 450));
 
     sf::Clock frameClock;
 
@@ -122,10 +114,10 @@ int main() {
     Attack d(animatedSprite1, 2, sf::IntRect(0, 0, 0, 0));
     Player player1(c, 100, 200, 0);
     Player player2(d, 1400, 200, 2, &player1);
-    Input i1("248", 60);
-    Input i2("268", 60);
-    Input i3("464", 60);
-    Input i4("646", 60);
+    Input i1("254585", 60);
+    Input i2("256585", 60);
+    Input i3("456545", 60);
+    Input i4("654565", 60);
     player1.setVs(&player2);
     Attack a(animatedSprite, 2, player1.getPosition());
     Attack b(animatedSprite1, 2, player2.getPosition());
@@ -143,18 +135,10 @@ int main() {
     player1.start(0);
     player2.start(0);
 
-    sf::Text akai("AKAI", tr, 40);
-    sf::Text ao("AO", tr, 40);
-    akai.setColor(sf::Color::Red);
-    ao.setColor(sf::Color::Cyan);
-    akai.setPosition(18, 50);
-    ao.setPosition(1840, 50);
-
     //cool music is cool
 
     std::list<std::string> musicList;
     musicList.push_back("testflight.ogg");
-    musicList.push_back("deadlyClass.ogg");
     musicList.push_back("deadlyClass.ogg");
     std::list<std::string>::const_iterator lit(musicList.begin());
     sf::Music music;
@@ -165,10 +149,12 @@ int main() {
 
     LifeBar Lb1(20, 0);
     LifeBar Lb2(1890, 1);
-    Lb2.SetColor(sf::Color::Cyan);
 
+    Lb2.SetColor(sf::Color::Cyan);
     sf::Sprite bgSprite;
     bgSprite.setTexture(bgTexture);
+
+
 
     while (window.isOpen())
     {
